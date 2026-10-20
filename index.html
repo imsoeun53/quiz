@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>성과리뷰 복습 퀴즈</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--bg:#f3f5f8;--surface:#fff;--sunk:#e9edf3;--line:#d5dbe4;--fg:#17202e;--muted:#5b6678;--navy:#1f3a64;--navy-ink:#fff;--orange:#e2711d;--orange-soft:#fdeedf;--good:#1d7a4c;--good-soft:#e2f3ea;--bad:#c23b2e;--bad-soft:#fbe6e3;--cellhead:#e6ecf5;--r:10px}
+@media (prefers-color-scheme:dark){:root{--bg:#10151d;--surface:#18202b;--sunk:#1f2936;--line:#2e3a4a;--fg:#e6ebf2;--muted:#9aa6b8;--navy:#8fb0e3;--navy-ink:#0f1722;--orange:#f39a52;--orange-soft:#3a2a1c;--good:#5cc78f;--good-soft:#173326;--bad:#f07f73;--bad-soft:#3b1d1a;--cellhead:#233044;color-scheme:dark}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:anywhere;padding:20px 16px 40px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+h1,h2{margin:0;line-height:1.3}
+p{margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--orange);outline-offset:2px}
+.eyebrow{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--muted)}
+h1{font-size:28px;font-weight:700}
+h1 em{font-style:normal;color:var(--orange)}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-weight:600;font-size:14px}
+.flow .c{background:var(--cellhead);border:1px solid var(--line);padding:3px 10px;border-radius:4px}
+.flow .a{color:var(--muted)}
+.muted{color:var(--muted);font-size:14px}
+.primary{background:var(--navy);color:var(--navy-ink);border:0;border-radius:var(--r);padding:14px 20px;font-weight:700;font-size:17px;width:100%}
+.top{display:flex;flex-direction:column;gap:6px;position:sticky;top:0;background:var(--bg);padding:6px 0;z-index:5}
+.toprow{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.bar{display:grid;grid-template-columns:repeat(10,1fr);gap:4px}
+.seg{height:10px;border-radius:4px;background:var(--sunk);border:0;padding:0;display:block}
+button.seg{box-shadow:inset 0 0 0 1px var(--line)}
+.seg.ok{background:var(--good)}.seg.no{background:var(--bad)}
+.seg.now{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--orange)}
+.seg.now:not(.ok):not(.no){background:var(--orange)}
+.nav{display:flex;justify-content:space-between;min-height:26px}
+.navbtn{background:transparent;border:1px solid var(--line);border-radius:999px;padding:2px 12px;font-size:13px;font-weight:600;color:var(--muted)}
+.q{display:flex;flex-direction:column;gap:14px}
+.tag{font-size:12px;font-weight:600;color:var(--orange);background:var(--orange-soft);border-radius:999px;padding:3px 10px;width:max-content}
+.q h2{font-size:19px}
+.stmt{background:var(--surface);border:1px dashed var(--orange);border-radius:var(--r);padding:14px;font-weight:600;font-size:17px}
+.stmt small{display:block;font-weight:500;font-size:12px;color:var(--muted)}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt,.case{display:flex;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:var(--r);padding:12px;width:100%}
+.opt{gap:12px;align-items:flex-start}
+.case{flex-direction:column;gap:8px}
+.opt:hover,.case:hover{border-color:var(--navy)}
+.k{flex:none;width:26px;height:26px;border-radius:6px;background:var(--sunk);display:grid;place-items:center;font-size:13px;font-weight:700}
+.t{min-width:0}
+.right{border-color:var(--good)!important;background:var(--good-soft)}
+.wrong{border-color:var(--bad)!important;background:var(--bad-soft)}
+.right .k{background:var(--good);color:var(--surface)}.wrong .k{background:var(--bad);color:var(--surface)}
+.ch{display:flex;justify-content:space-between;align-items:center;font-weight:700}
+.lab{font-size:11px;font-weight:500;color:var(--muted)}
+.sheet{display:grid;grid-template-columns:minmax(78px,30%) 1fr;border:1px solid var(--line);border-radius:4px;overflow:hidden;font-size:14px;background:var(--surface)}
+.sheet div{padding:7px 10px;border-bottom:1px solid var(--line);min-width:0}
+.sheet div:nth-last-child(-n+2){border-bottom:0}
+.sheet .h{background:var(--cellhead);font-weight:600;font-size:13px;border-right:1px solid var(--line)}
+.verdict{font-size:12px;font-weight:700;padding:2px 8px;border-radius:4px;color:var(--surface)}
+.verdict.o{background:var(--good)}.verdict.x{background:var(--bad)}
+.note{display:block;margin-top:8px;font-size:14px;font-weight:400}
+.right .note b{color:var(--good)}.wrong .note b{color:var(--bad)}
+.fb{border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);background:var(--surface)}
+.res{font-weight:700;font-size:17px}
+.fb.ok .res{color:var(--good)}.fb.no .res{color:var(--bad)}
+.retry{color:var(--bad);font-weight:600;font-size:14px}
+.linkbtn{background:none;border:0;padding:2px 0;color:var(--muted);text-decoration:underline;font-size:14px;width:max-content}
+blockquote{margin:0;padding:10px 12px;border-left:3px solid var(--navy);background:var(--sunk);border-radius:0 6px 6px 0;font-size:14px}
+blockquote small{display:block;color:var(--muted);font-size:11px}
+.big{display:flex;align-items:baseline;gap:8px}
+.big b{font-size:60px;line-height:1;color:var(--navy)}
+.big span{font-size:20px;color:var(--muted)}
+.review{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--surface)}
+.ritem{display:flex;gap:10px;padding:10px 12px;border:0;border-bottom:1px solid var(--line);font-size:14px;background:transparent;text-align:left;width:100%}
+.ritem:last-child{border-bottom:0}
+.ritem span:nth-child(2){flex:1}
+.m{font-weight:700;width:18px;flex:none}.m.ok{color:var(--good)}.m.no{color:var(--bad)}
+.take{background:var(--navy);color:var(--navy-ink);border-radius:var(--r);padding:16px;display:flex;flex-direction:column;gap:8px}
+.take .qq{font-weight:700;font-size:17px}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+const PARTS={1:"성과리뷰 작성",2:"목표 설정",3:"성과관리와 리더"};
+const Q=[
+{part:1,type:"mc",title:"성과리뷰에서 성과가 잘 보이지 않았던 가장 큰 이유는 무엇일까요?",
+opts:[{t:"실제로 한 일이 별로 없어서",n:"일을 하지 않은 것은 아니에요. 한 일은 있는데 성과가 충분히 드러나지 않은 거예요."},
+{t:"목표·활동·실제 결과가 비슷한 말로 반복되거나 한데 섞여 있어서",n:"세 가지가 구분되지 않으면 무엇이 달라졌는지 읽는 사람이 찾을 수 없어요."},
+{t:"문장을 짧게 써서",n:"길이의 문제가 아니에요. 길고 그럴듯한 문장이어도 목표·활동·결과가 섞여 있으면 성과가 안 보여요."},
+{t:"양식 칸이 너무 많아서",n:"반대예요. 개편 양식은 칸을 나눠서 목표·활동·결과를 구분해 쓰도록 만든 거예요."}],ans:1,
+exp:"성과리뷰에 일한 흔적은 있지만, 목표와 활동, 실제 결과가 구분되지 않아 성과가 충분히 드러나지 않았던 거예요.",
+quote:"성과가 없었다기보다, 성과가 충분히 드러나지 않은 것입니다."},
+{part:1,type:"pick",title:"성과가 더 잘 보이는 작성은 어느 쪽일까요?",hint:"두 사례를 비교해 고르세요.",
+cases:[{rows:[["목표","직무 전문성 향상"],["활동","교육 2회 수강"],["실제 결과","교육 2회 수강"]],ok:false,n:"활동과 결과에 같은 말(교육 2회 수강)이 반복돼요. 교육을 들은 건 알 수 있지만, 전문성이 실제 업무에서 어떻게 달라졌는지는 보이지 않아요."},
+{rows:[["목표","신규 ERP를 활용해 담당 업무를 독립적으로 수행"],["활동","ERP 교육 이수, 실제 업무에 반복 적용"],["실제 결과","기본 견적·수주 업무를 오류 없이 단독 수행"]],ok:true,n:"목표(무엇을 달성할지), 활동(실제로 한 일), 결과(달라진 점)가 각각 다른 내용을 말하고 있어요. 교육 뒤 업무에서 무엇이 달라졌는지가 결과에 담겨 있어요."}],
+exp:"교육을 들었다는 사실보다 그 교육으로 업무에서 무엇이 달라졌는지가 드러나야 성과가 보여요.",
+quote:"교육을 들었다는 것이 아니라, 실제 업무에서 나타난 결과입니다."},
+{part:1,type:"slot",applied:true,title:"이 문장은 성과리뷰 1번 표의 어느 칸에 들어가야 할까요?",
+ctx:[["부서","영업팀"],["목표","기존 거래처 재주문율 향상 (전년 60% → 70%)"]],
+stmt:"상반기 휴면 거래처 45곳 방문, 거래처별 맞춤 제안서 30건 발송 완료",
+opts:[{t:"목표",n:"목표는 위의 '재주문율 60% → 70%'예요. 방문과 제안서 발송은 그 목표를 위해 한 일이에요."},
+{t:"성과 창출을 위한 활동",n:"'45곳', '30건'처럼 숫자가 있어 결과처럼 보이지만, 우리가 한 일의 양이에요. 그래서 활동 칸이에요."},
+{t:"실제 결과",n:"방문과 제안서 건수는 한 일의 양이에요. 결과는 거래처에서 생긴 변화예요. 예: '휴면 거래처 45곳 중 12곳 재주문, 재주문율 60% → 71%'."},
+{t:"달성 여부",n:"달성 여부는 실제 결과를 보고 달성 수준을 고르는 칸이에요. 영업 활동 실적을 쓰는 곳이 아니에요."}],ans:1,
+exp:"숫자가 들어 있다고 모두 결과는 아니에요. ‘몇 곳·몇 건 했는지’는 활동이고, ‘그래서 무엇이 달라졌는지’가 실제 결과예요.",
+quote:"‘무엇을 했는지’, ‘몇 번 했는지’는 떠오르지만 ‘어떤 결과로 이어졌는지’는 잘 보이지 않는 겁니다."},
+{part:1,type:"pick",title:"재고 업무 성과, 어느 쪽이 더 잘 보이나요?",hint:"목표와 실제 결과를 비교해 보세요.",
+cases:[{rows:[["목표","월말 재고 확인 과정의 오류와 재작업을 줄인다"],["실제 결과","재고 차이 4건 → 1건, 재확인 작업 3회 → 1회"]],ok:true,n:"무엇을 줄이려 했는지(오류·재작업)와 실제로 얼마나 줄었는지(4→1, 3→1)가 짝을 이뤄서 성과가 분명하게 보여요."},
+{rows:[["목표","재고 관리 강화"],["활동","재고 점검 및 관리"],["실제 결과","정기적으로 관리했다"]],ok:false,n:"세 칸이 '재고·관리'라는 같은 말을 반복하고 있어요. 열심히 한 건 보이지만 무엇이 개선됐는지는 확인할 수 없어요."}],
+exp:"무엇을 바꾸려 했고 실제로 얼마나 바뀌었는지가 보이면 성과가 드러나요.",
+quote:"4건에서 1건으로, 3회에서 1회로 줄었다면 성과가 분명하게 보입니다."},
+{part:1,type:"slot",applied:true,title:"이 문장은 성과리뷰 1번 표의 어느 칸에 들어가야 할까요?",
+ctx:[["부서","재무팀"],["목표","월 결산 마감 기간 단축 (영업일 5일 → 3일)"],["실제 결과","영업일 4일 마감 (3분기 평균)"]],
+stmt:"거래처 증빙 회수 지연으로 평균 1일 초과. 4분기부터 증빙 제출 기한을 결산 D-3으로 앞당기고, 미제출 거래처는 매주 영업팀과 공유",
+opts:[{t:"성과 창출을 위한 활동",n:"'앞당기고, 공유'가 할 일처럼 보이지만 아직 하지 않은 다음 분기 계획이에요. 활동 칸에는 이번 기간에 실제로 한 일을 써요."},
+{t:"실제 결과",n:"실제 결과는 '영업일 4일 마감'이에요. 이 문장은 목표(3일)와 결과(4일)가 왜 달랐는지를 설명해요."},
+{t:"달성 여부",n:"달성 여부는 결과를 보고 달성 수준을 고르는 칸이에요. 원인과 보완 계획은 따로 써요."},
+{t:"차이·원인 및 보완",n:"목표와 결과의 차이(1일), 그 원인(증빙 회수 지연), 보완 방법(기한 조정·공유)이 모두 들어 있어요."}],ans:3,
+exp:"목표에 못 미쳤어도 차이의 원인과 보완 방법을 구체적으로 쓰면, 다음 목표를 세울 때 바로 활용할 수 있어요.",
+quote:"목표, 성과 창출을 위한 활동, 실제 결과, 달성 여부, 차이·원인 및 보완을 구분해서 작성합니다."},
+{part:1,type:"mc",title:"매달 정기 출하 업무를 일정 지연·누락 없이 안정적으로 운영했습니다. 어떻게 작성하면 될까요?",
+opts:[{t:"새로운 개선이 아니니 성과리뷰에서 뺀다",n:"빼지 않아도 돼요. 반복 업무를 안정적으로 해낸 것도 성과예요."},
+{t:"구분을 '업무 수행'으로 선택하고 안정적으로 운영한 결과를 쓴다",n:"반복·일상 업무를 안정적으로 해낸 것은 '업무 수행'으로 쓰면 돼요."},
+{t:"개선 성과처럼 보이도록 '효율화'라고 바꿔 쓴다",n:"억지로 '개선'이라고 쓰지 않아도 돼요. 실제와 다르게 쓰면 결과를 확인하기 더 어려워져요."},
+{t:"차이·원인 및 보완 칸에만 적는다",n:"이 칸은 목표 대비 차이와 원인을 쓰는 곳이에요. 업무 수행도 목표·활동·결과로 똑같이 작성해요."}],ans:1,
+exp:"모든 성과가 새로운 개선일 필요는 없어요. 안정적으로 운영한 것 자체를 '업무 수행'으로 작성하면 됩니다.",
+quote:"모든 성과가 반드시 새로운 개선이어야 하는 것은 아니며, ‘업무 수행’으로 작성하면 됩니다."},
+{part:2,type:"mc",applied:true,title:"영업지원 담당자가 ‘견적 회신 리드타임 단축’을 올해 목표로 세웠어요. 목표 달성 기준으로 가장 알맞은 것은?",
+hint:"모두 그럴듯해 보여요. 연말에 ‘달성했다’고 판단할 수 있는 것을 골라 보세요.",
+opts:[{t:"견적 회신 프로세스 개선 및 리드타임 단축",n:"목표를 조금 길게 다시 쓴 거예요. 연말에 얼마나 단축돼야 달성인지 판단할 수 없어요."},
+{t:"견적 대응 체계 고도화를 통한 고객 만족도 제고",n:"표현은 전문적이지만 '고도화', '제고'가 어느 수준인지 정해져 있지 않아요."},
+{t:"견적 회신 리드타임 평균 5일 → 2일 이내, 기한 초과 건 월 2건 이하",n:"어느 수준이면 달성인지 숫자로 정해져 있어서, 연말에 실제 결과와 바로 비교할 수 있어요."},
+{t:"견적 템플릿 표준화, 유관부서 협의 월 1회 운영",n:"목표를 위해 할 일, 즉 '주요 실행 계획'이에요. 이걸 다 해도 리드타임이 줄었는지는 알 수 없어요."}],ans:2,
+exp:"목표는 ‘무엇을’ 바꿀지, 달성 기준은 ‘어느 수준까지’ 가면 달성인지예요. 목표를 다시 쓰거나 할 일을 적으면 기준이 되지 않아요.",
+quote:"달성 기준은 나중에 달성 여부를 판단할 수 있는 기준입니다."},
+{part:2,type:"pick",applied:true,title:"구매팀의 목표 설정, 어느 쪽이 더 잘 세운 걸까요?",hint:"둘 다 숫자가 있어요. 연말에 무엇으로 달성을 판단하게 되는지 보세요.",
+cases:[{rows:[["목표","구매 원가 경쟁력 강화"],["목표 달성 기준","협력사 단가 협상 미팅 분기 2회 이상"],["주요 실행 계획","협력사 관리 체계 고도화"],["결과 확인 시점","연말"]],ok:false,n:"달성 기준이 '미팅을 몇 번 했는지'예요. 미팅을 다 해도 원가가 실제로 어떻게 됐는지는 판단할 수 없어요. 횟수는 기준보다 실행 계획에 가까워요."},
+{rows:[["목표","주요 원자재 구매 단가 상승 억제"],["목표 달성 기준","상위 10개 품목 평균 단가 인상률 전년 대비 3% 이내"],["주요 실행 계획","복수 견적 비교 의무화, 분기별 단가 재협상"],["결과 확인 시점","반기 중간 점검, 연말 최종"]],ok:true,n:"기준이 '결과가 어느 수준이어야 하는지'로 정해져 있고, 실행 계획과 확인 시점도 각자 다른 내용을 말해요."}],
+exp:"숫자가 있다고 좋은 기준은 아니에요. 활동 횟수가 아니라 결과가 어느 수준이어야 하는지를 정해야 연말에 달성 여부를 판단할 수 있어요.",
+quote:"목표는 무엇을 달성하거나 변화시키려는지를 정하는 것이고, 달성 기준은 나중에 달성 여부를 판단할 수 있는 기준입니다."},
+{part:2,type:"mc",title:"달성 기준을 미리 정해 두는 이유로 가장 알맞은 것은?",
+opts:[{t:"평가를 더 까다롭게 하기 위해",n:"영상에서 분명히 말해요. 달성 기준은 평가를 까다롭게 만드는 기준이 아니에요."},
+{t:"리뷰 시점에 점수를 깎을 근거를 남기기 위해",n:"감점용이 아니에요. 어디까지 갈지 미리 같은 그림을 갖기 위한 거예요."},
+{t:"어디까지 갈지 리더와 구성원이 처음부터 서로 맞춰 두기 위해",n:"처음에 기준을 맞춰 두면, 일하는 동안에도 리뷰 때도 같은 기준으로 이야기할 수 있어요."},
+{t:"양식에 칸이 있으니 채우기 위해",n:"형식적으로 채우면 나중에 달성 여부를 판단할 수 없어요. 기준은 판단에 쓰려고 정하는 거예요."}],ans:2,
+exp:"좋은 성과리뷰는 리뷰 시점에만 잘 쓴다고 만들어지지 않아요. 처음 목표를 세울 때 달성 기준도 함께 정해 둡니다.",
+quote:"달성 기준은 평가를 까다롭게 만드는 기준이 아닙니다. 서로 맞춰두는 기준입니다."},
+{part:3,type:"mc",title:"목표를 세운 뒤의 성과관리, 가장 알맞은 흐름은?",
+opts:[{t:"목표는 한번 정하면 바꾸지 않고, 리뷰 시점에 한 번 확인한다",n:"목표는 한번 정했다고 끝나지 않아요. 중간중간 어디까지 왔는지, 목표나 기준을 조정할 필요는 없는지 확인해요."},
+{t:"처음에 기대 결과를 맞추고, 업무 중 중간중간 확인하고, 리뷰 때 실제 결과를 근거로 피드백한다",n:"처음 → 업무 중 → 리뷰 시점, 세 번 모두 리더와 구성원이 함께해요."},
+{t:"구성원이 혼자 작성하고 리더는 '성실하게 잘했습니다'라고 코멘트한다",n:"성과관리는 혼자 하는 일이 아니에요. 이런 코멘트로는 무엇을 잘했고 무엇을 보완할지 알 수 없어요."},
+{t:"리뷰 시점에 기억나는 일을 최대한 많이 적는다",n:"목표가 분명하지 않으면 리뷰 때 '기억나는 일'만 떠올라요. 그게 성과가 안 보이는 출발점이에요."}],ans:1,
+exp:"리뷰 때는 처음 목표와 실제 결과를 비교하고, 리더 피드백도 인상평가가 아닌 실제 결과를 근거로 합니다.",
+quote:"‘성실하게 잘했습니다’라는 말만으로는… ‘그래서 실제 결과는 무엇이었나요?’"}
+];
+const app=document.getElementById("app");
+const fresh=()=>({screen:"intro",i:0,max:0,done:false,qs:[],first:[]});
+let S=fresh();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const cnt=q=>q.type==="pick"?q.cases.length:q.opts.length;
+const isRight=(q,v)=>q.type==="pick"?q.cases[v].ok:v===q.ans;
+const score=()=>S.first.filter(Boolean).length;
+function shuffle(n){const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function st(){const q=Q[S.i];if(!S.qs[S.i])S.qs[S.i]={tried:[],found:false,revealed:false,order:q.type==="slot"?[...Array(cnt(q)).keys()]:shuffle(cnt(q))};return S.qs[S.i]}
+function go(i){S.i=i;S.max=Math.max(S.max,i);S.screen="q";render();window.scrollTo(0,0)}
+function render(){S.screen==="intro"?intro():S.screen==="q"?question():result()}
+function intro(){
+app.innerHTML=`<span class="eyebrow">성과리뷰 교육영상 · 복습</span>
+<h1>영상 다 보셨나요?<br><em>10문제</em>로 확인해 봐요</h1>
+<div class="flow"><span class="c">목표</span><span class="a">→</span><span class="c">활동</span><span class="a">→</span><span class="c">실제 결과</span><span class="a">→</span><span class="c">달성 여부</span></div>
+<p class="muted">10문항, 약 5분. 틀려도 다른 보기를 계속 골라 볼 수 있고, 고른 보기마다 왜 맞는지·왜 아닌지 설명이 나와요. 점수는 처음 고른 답으로 계산해요. 영상 속 사례와 다른 부서의 응용 사례가 섞여 있어요.</p>
+<button class="primary" id="start">퀴즈 시작</button>
+<p class="muted" style="font-size:12px">문제 속 사례는 모두 교육용 예시입니다. 점수는 어디에도 저장되지 않아요.</p>`;
+document.getElementById("start").onclick=()=>{S=fresh();go(0)};
+}
+function bar(){
+return `<div class="top"><div class="toprow"><span>${S.i+1} / ${Q.length} · ${PARTS[Q[S.i].part]}</span><span>첫 시도 정답 ${score()}</span></div>
+<div class="bar">${Q.map((_,k)=>{const c=(S.first[k]!==undefined?(S.first[k]?"ok":"no"):"")+(k===S.i?" now":"");return k<=S.max?`<button class="seg ${c}" data-go="${k}" aria-label="${k+1}번 문제로 이동"></button>`:`<i class="seg"></i>`}).join("")}</div>
+<div class="nav">${S.i>0?`<button class="navbtn" data-go="${S.i-1}">← ${S.i}번</button>`:"<span></span>"}${S.done?`<button class="navbtn" id="toresult">결과로 →</button>`:(S.i<S.max?`<button class="navbtn" data-go="${S.i+1}">${S.i+2}번 →</button>`:"<span></span>")}</div></div>`;
+}
+function question(){
+const q=Q[S.i],s=st(),showAll=s.found||s.revealed;
+const label={mc:"상황 문제",pick:"X/O 사례 고르기",slot:"칸 맞히기"}[q.type]+(q.applied?" · 응용 사례":"");
+const state=v=>s.tried.includes(v)?(isRight(q,v)?"right":"wrong"):(s.revealed&&isRight(q,v)?"right":"");
+const sheet=rows=>`<span class="sheet">${rows.map(r=>`<div class="h">${esc(r[0])}</div><div>${esc(r[1])}</div>`).join("")}</span>`;
+let body="";
+if(q.type==="pick"){
+body=`<div class="opts">${s.order.map((ci,pos)=>{const c=q.cases[ci],x=state(ci);
+return `<button class="case ${x}" data-v="${ci}"><span class="ch"><span>사례 ${"AB"[pos]}</span>${x?`<span class="verdict ${c.ok?"o":"x"}">${c.ok?"O 잘 보임":"X 안 보임"}</span>`:`<span class="lab">교육용 사례</span>`}</span>${sheet(c.rows)}${x?`<span class="note"><b>${c.ok?"이래서 잘 보여요.":"이래서 안 보여요."}</b> ${esc(c.n)}</span>`:""}</button>`}).join("")}</div>`;
+}else{
+if(q.ctx)body+=sheet(q.ctx);
+if(q.type==="slot")body+=`<div class="stmt"><small>이 문장</small>“${esc(q.stmt)}”</div>`;
+body+=`<div class="opts">${s.order.map((oi,pos)=>{const o=q.opts[oi],x=state(oi);
+return `<button class="opt ${x}" data-v="${oi}"><span class="k">${pos+1}</span><span class="t">${esc(o.t)}${x?`<span class="note"><b>${isRight(q,oi)?"정답":"오답노트"}</b> · ${esc(o.n)}</span>`:""}</span></button>`}).join("")}</div>`;
+}
+let fb="";
+if(showAll){const ok=S.first[S.i];
+fb=`<div class="fb ${ok?"ok":"no"}"><span class="res">${s.revealed&&!s.found?"정답을 확인했어요":ok?"한 번에 맞혔어요":"다시 골라서 정답을 찾았어요"}</span><p>${esc(q.exp)}</p><blockquote><small>영상에서</small>${esc(q.quote)}</blockquote><p class="muted" style="font-size:13px">다른 보기도 눌러서 왜 아닌지 확인해 보세요.</p><button class="primary" id="next">${S.i<Q.length-1?(S.i<S.max?`${S.i+2}번으로`:"다음 문제"):"결과 보기"}</button></div>`;
+}else if(s.tried.length){fb=`<div class="fb no"><span class="retry">다른 보기를 골라 보세요.</span><button class="linkbtn" id="reveal">정답 바로 보기</button></div>`}
+app.innerHTML=bar()+`<section class="q"><span class="tag">${label}</span><h2>${esc(q.title)}</h2>${q.hint?`<p class="muted">${esc(q.hint)}</p>`:""}${body}${fb}</section>`;
+app.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{const v=+b.dataset.v;if(!s.tried.includes(v))s.tried.push(v);if(S.first[S.i]===undefined)S.first[S.i]=isRight(q,v);if(isRight(q,v))s.found=true;render();const el=app.querySelector(`[data-v="${v}"]`);if(el)el.scrollIntoView({block:"nearest"})});
+app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
+const r=document.getElementById("reveal");if(r)r.onclick=()=>{s.revealed=true;render()};
+const n=document.getElementById("next");if(n)n.onclick=()=>{if(S.i<Q.length-1)return go(S.i+1);S.screen="result";S.done=true;render();window.scrollTo(0,0)};
+const tr=document.getElementById("toresult");if(tr)tr.onclick=()=>{S.screen="result";render();window.scrollTo(0,0)};
+}
+function result(){
+const s=score();
+const msg=s===10?"완벽해요! 영상 핵심을 모두 기억하고 있어요.":s>=8?"잘하셨어요. 처음에 틀린 문제만 한 번 더 보면 충분해요.":s>=5?"절반 이상 맞혔어요. 아래 X 표시 문제를 다시 확인해 보세요.":"영상의 핵심 장면을 한 번 더 보고 다시 풀어 보세요.";
+app.innerHTML=`<span class="eyebrow">결과 · 첫 시도 기준</span><div class="big"><b>${s}</b><span>/ ${Q.length}</span></div><p style="font-weight:600;font-size:17px">${msg}</p>
+<p class="muted" style="font-size:13px">문항을 누르면 그 문제로 돌아가 오답노트를 다시 볼 수 있어요.</p>
+<div class="review">${Q.map((q,k)=>`<button class="ritem" data-go="${k}"><span class="m ${S.first[k]?"ok":"no"}">${S.first[k]?"O":"X"}</span><span>${k+1}. ${esc(q.title)}</span><span class="muted">›</span></button>`).join("")}</div>
+<div class="take"><span style="font-size:12px;font-weight:600;opacity:.8">기억할 두 가지</span><p>성과리뷰를 쓸 때는 “무엇을 했지?”에서 한 걸음 더 나아가</p><p class="qq">“그래서 실제 어떤 결과가 있었지?”</p><p>목표를 세울 때는 무엇을 달성할 것인지, 어느 수준이면 달성인지 처음부터 리더와 함께 맞춰 보세요.</p></div>
+<button class="primary" id="again">다시 풀기</button>`;
+app.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>go(+b.dataset.go));
+document.getElementById("again").onclick=()=>{S=fresh();render();window.scrollTo(0,0)};
+}
+render();
+</script>
+</body>
+</html>
